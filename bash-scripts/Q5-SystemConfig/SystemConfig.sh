@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo -e "Currently logged in user : $(whoami)" '\n'
 echo -e "Currently using shell :" $SHELL '\n'
 echo -e "Home Directory :" $HOME '\n'
