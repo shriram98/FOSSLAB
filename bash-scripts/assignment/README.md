@@ -2,7 +2,7 @@
 
 ## Task
   Down load KTU S1 results of your batch.
-  Convert to .txt file: may be pdftotext -layout useful
+  Convert to .txt file.
   Separate results of C4B only.
   Don't edit the files directly.
   Compute sgpa.
