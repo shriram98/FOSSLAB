@@ -1,16 +1,26 @@
 #!/bin/bash
+
+#converting to text file
 pdftotext -layout  result.pdf result.txt
+
+#filtering list of cs students and pasting it in resultcs.txt
 paste <(grep MDL16CS result.txt) <(grep CS110\( result.txt) | tr -d ' ' > resultcs.txt
+
+#removing temporary files
 rm grades.txt 2>/dev/null
 touch grades.txt
 rm sgpa.txt 2>/dev/null
 touch sgpa.txt
+
+#for loop to get grades of each student and paste it in grades.txt
 for i in {2..10}
 do
   paste grades.txt  <(cut -d'(' -f$i resultcs.txt | cut -d')' -f1) > temp.txt
   mv temp.txt grades.txt
 done
-i=0
+
+#calculating sgpa from grades.txt and storing it in sgpa.txt
+#here bc() is used to do calculations in floating point as bash does not support flop
 credits=(4 4 3 3 3 3 1 1 1)
 while read -r line
 do
@@ -41,7 +51,13 @@ do
    done
    bc <<< "scale = 2; ($sgpa/23)" >> sgpa.txt
 done<grades.txt
-#wget http://14.139.184.212/ask/c4b/c4b.txt 
+
+#getting csb student list
+wget http://14.139.184.212/ask/c4b/c4b.txt
+
+#filtering only csb student sgpa and storing in SGPA.txt
 join <(cut -d$'\t' -f4 c4b.txt) <(paste <(grep MDL16CS result.txt | cut -d' ' -f1) sgpa.txt) > SGPA.txt 2>/dev/null 
+
+#removing temporary files
 rm resultcs.txt sgpa.txt grades.txt result.txt
 
